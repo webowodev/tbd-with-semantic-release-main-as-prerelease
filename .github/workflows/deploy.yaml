@@ -1,0 +1,62 @@
+name: Deploy
+
+on:
+    release:
+        types: [created]
+    workflow_dispatch:
+        inputs:
+            promote_from_staging:
+                description: "Promote staging release to production"
+                required: true
+                type: boolean
+                default: false
+            release_tag:
+                description: "Release tag to promote"
+                required: false
+                type: string
+
+jobs:
+    deploy-staging:
+        if: github.event_name == 'release' && github.event.release.prerelease == true
+        runs-on: ubuntu-latest
+        environment: staging
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Deploy to staging
+              run: |
+                  echo "Deploying pre-release version ${{ github.event.release.tag_name }} to staging"
+                  # Add your staging deployment commands here
+
+            - name: Staging deployment complete
+              run: |
+                  echo "✅ Staging deployment completed successfully!"
+                  echo "Release: ${{ github.event.release.tag_name }}"
+                  echo "To promote to production, go to Actions > Deploy > Run workflow"
+
+    deploy-production:
+        if: |
+            (github.event_name == 'release' && github.event.release.prerelease == false) ||
+            (github.event_name == 'workflow_dispatch' && inputs.promote_from_staging == true)
+        runs-on: ubuntu-latest
+        environment: production
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.event.release.tag_name }}
+
+            - name: Deploy to production
+              run: |
+                  TAG=${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.event.release.tag_name }}
+                  echo "Deploying version ${TAG} to production"
+                  # Add your production deployment commands here
+
+            - name: Production deployment complete
+              run: |
+                  TAG=${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.event.release.tag_name }}
+                  echo "✅ Production deployment completed successfully!"
+                  echo "Release: ${TAG}"

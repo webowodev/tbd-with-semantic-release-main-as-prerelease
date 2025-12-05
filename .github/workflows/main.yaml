@@ -1,0 +1,29 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - main # to listen pre-release channel pushes
+            - rel/* # to listen latest channel pushes
+    pull_request:
+        branches:
+            - main # to listen pre-release channel pushes
+
+jobs:
+    release:
+        name: Release
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/rel/')
+        permissions:
+            contents: write
+            issues: write
+            pull-requests: write
+            id-token: write
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Semantic Release
+              uses: cycjimmy/semantic-release-action@v4
+              env:
+                  GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
