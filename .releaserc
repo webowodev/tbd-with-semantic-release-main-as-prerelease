@@ -3,7 +3,7 @@
     "rel/v+([0-9])?(.{+([0-9]),x}).x",
     {
       "name": "main",
-      "prerelease": true
+      "prerelease": false
     },
     "next",
     "next-major",
