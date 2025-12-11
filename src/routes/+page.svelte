@@ -5,3 +5,4 @@
 </p>
 
 <p>a foo feature</p>
+<p>a bar feature</p>
