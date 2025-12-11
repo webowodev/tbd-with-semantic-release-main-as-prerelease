@@ -8,3 +8,5 @@
 <p>a bar feature</p>
 <p>a car feature</p>
 <p>a boo feature</p>
+<p>a far feature</p>
+<p>a fix for foo feature</p>
