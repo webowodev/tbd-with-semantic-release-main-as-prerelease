@@ -10,3 +10,4 @@
 <p>a boo feature</p>
 <p>a far feature</p>
 <p>a fix for foo feature</p>
+<p>a motor feature</p>
