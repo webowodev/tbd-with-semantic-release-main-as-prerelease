@@ -1,10 +1,13 @@
 {
   "branches": [
-    "rel/v+([0-9])?(.{+([0-9]),x}).x",
     {
-      "name": "main",
+      "name": "rel/v+([0-9])?(.{+([0-9]),x}).x",
       "prerelease": false,
       "channel": "latest"
+    },
+    {
+      "name": "main",
+      "channel": "rc"
     },
     "next",
     "next-major",
